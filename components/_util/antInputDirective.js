@@ -44,6 +44,8 @@ if (isIE9) {
   });
 }
 
+// ant input自定义指令
+
 export function antInput(Vue) {
   return Vue.directive('ant-input', {
     inserted(el, binding, vnode) {

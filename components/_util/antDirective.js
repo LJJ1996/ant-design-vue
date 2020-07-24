@@ -3,6 +3,7 @@ import { antInput } from './antInputDirective';
 import { antDecorator } from './FormDecoratorDirective';
 import { antPortal } from './portalDirective';
 
+// ant 自定义指令
 export default {
   install: Vue => {
     Vue.use(ref, { name: 'ant-ref' });

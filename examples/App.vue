@@ -48,7 +48,9 @@
         <a-color-picker v-model="color2" :locale="zhCN" :format="format" />
       </div>
       <div>
-        <a-button shape="round" @click="format = 'HEX'" type="primary">HEX</a-button>
+        <a-button shape="round" @click="format = 'HEX'" type="primary">
+          <a-icon type="left" />
+        </a-button>
         <button @click="format = 'RGBA'">RGBA</button>
         <button @click="format = 'HSVA'">HSVA</button>
         <button @click="format = 'HSLA'">HSLA</button>

@@ -12,6 +12,7 @@ function preventDefault(e) {
   e.preventDefault();
 }
 
+// 除[A-Za-z0-9_\.-] 字符外都被去除
 function defaultParser(input) {
   return input.replace(/[^\w\.-]+/g, '');
 }
@@ -80,6 +81,7 @@ const inputNumberProps = {
 
 export default {
   name: 'VCInputNumber',
+
   mixins: [BaseMixin],
   model: {
     prop: 'value',
