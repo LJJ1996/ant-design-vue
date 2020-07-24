@@ -100,12 +100,14 @@ export default {
     }
   },
   methods: {
+    // 判断button内容中是否有两个中文汉字
     fixTwoCNChar() {
       // Fix for HOC usage like <FormatMessage />
       const node = this.$refs.buttonNode;
       if (!node) {
         return;
       }
+      // 获取button内容
       const buttonText = node.textContent;
       if (this.isNeedInserted() && isTwoCNChar(buttonText)) {
         if (!this.hasTwoCNChar) {
@@ -134,6 +136,7 @@ export default {
       return child;
     },
     isNeedInserted() {
+      // button只有一个子元素
       const { $slots, type } = this;
       const icon = getComponentFromProp(this, 'icon');
       return $slots.default && $slots.default.length === 1 && !icon && type !== 'link';
