@@ -24,6 +24,7 @@ export default {
   mounted() {
     this.$nextTick(() => {
       const node = this.$el;
+      //node类型，1为普通节点，2为属性节点，3为文本节点，8为注释
       if (node.nodeType !== 1) {
         return;
       }
@@ -106,6 +107,7 @@ export default {
       return insertExtraNode ? 'ant-click-animating' : 'ant-click-animating-without-extra-node';
     },
     bindAnimationEvent(node) {
+      // node有disabled属性 || className中有disabled 直接return
       if (
         !node ||
         !node.getAttribute ||

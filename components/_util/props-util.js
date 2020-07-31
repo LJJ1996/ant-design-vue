@@ -113,6 +113,7 @@ const getOptionProps = instance => {
 const getComponentFromProp = (instance, prop, options = instance, execute = true) => {
   if (instance.$createElement) {
     const h = instance.$createElement;
+    // 是否有prop
     const temp = instance[prop];
     if (temp !== undefined) {
       return typeof temp === 'function' && execute ? temp(h, options) : temp;

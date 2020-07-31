@@ -61,7 +61,6 @@ export default {
       } else if (typeof propSize === 'object') {
         sizeProps = propSize || {};
       }
-
       sizeClassObj = {
         ...sizeClassObj,
         [`${prefixCls}-${size}-${sizeProps.span}`]: sizeProps.span !== undefined,

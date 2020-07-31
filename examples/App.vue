@@ -48,10 +48,20 @@
         <a-color-picker v-model="color2" :locale="zhCN" :format="format" />
       </div>
       <div>
-        <a-button shape="round" @click="format = 'HEX'" type="primary">
-          <a-icon type="left" />
-        </a-button>
-        <button @click="format = 'RGBA'">RGBA</button>
+        <a-row
+          align="top"
+          :gutter="{ xs: 8, sm: 16, md: 24 }"
+          justify="center"
+          type="flex"
+          v-if="show"
+        >
+          <a-col>
+            <a-button icon="right" shape="round" @click="format = 'HEX'" type="primary"
+              >测试</a-button
+            >
+          </a-col>
+        </a-row>
+        <button @click="() => (show = !show)">RGBA</button>
         <button @click="format = 'HSVA'">HSVA</button>
         <button @click="format = 'HSLA'">HSLA</button>
         <button @click="format = 'CMYK'">CMYK</button>
@@ -115,8 +125,11 @@ export default {
           },
         },
       },
+      loading: false,
+      show: true,
     };
   },
+  created() {},
   methods: {
     changeHandler(...arg) {
       arg;

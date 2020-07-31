@@ -26,6 +26,7 @@ export default {
     };
   },
   computed: {
+    // 动态计算class
     classes() {
       const {
         prefixCls: customizePrefixCls,
@@ -72,10 +73,14 @@ export default {
     },
   },
   watch: {
+    // 监听button props中的loading值变化
     loading(val, preVal) {
+      console.log(val, preVal);
+      // preVal 之前是 {delay: **}，则清除之前的延迟定时器
       if (preVal && typeof preVal !== 'boolean') {
         clearTimeout(this.delayTimeout);
       }
+      // val 是 {delay: **}，则使用延迟定时器
       if (val && typeof val !== 'boolean' && val.delay) {
         this.delayTimeout = setTimeout(() => {
           this.sLoading = !!val;
@@ -95,6 +100,7 @@ export default {
     // if (this.timeout) {
     //   clearTimeout(this.timeout)
     // }
+    // 实例销毁之前清除定时器
     if (this.delayTimeout) {
       clearTimeout(this.delayTimeout);
     }
@@ -109,6 +115,7 @@ export default {
       }
       // 获取button内容
       const buttonText = node.textContent;
+      // 判断是否是两个中文汉字
       if (this.isNeedInserted() && isTwoCNChar(buttonText)) {
         if (!this.hasTwoCNChar) {
           this.hasTwoCNChar = true;
@@ -127,7 +134,9 @@ export default {
     insertSpace(child, needInserted) {
       const SPACE = needInserted ? ' ' : '';
       if (typeof child.text === 'string') {
+        // 去除button内容的前后空格
         let text = child.text.trim();
+        // 判断是两个汉字则插入空格
         if (isTwoCNChar(text)) {
           text = text.split('').join(SPACE);
         }
@@ -136,7 +145,7 @@ export default {
       return child;
     },
     isNeedInserted() {
-      // button只有一个子元素
+      // button只有一个子元素 & prop icon 为空（按钮内容无icon）则需要插入空格
       const { $slots, type } = this;
       const icon = getComponentFromProp(this, 'icon');
       return $slots.default && $slots.default.length === 1 && !icon && type !== 'link';
@@ -156,7 +165,9 @@ export default {
         click: handleClick,
       },
     };
+    // 获取iconType
     const iconType = sLoading ? 'loading' : icon;
+    // 获取iconNode
     const iconNode = iconType ? <Icon type={iconType} /> : null;
     const children = filterEmpty($slots.default);
     const autoInsertSpace = this.configProvider.autoInsertSpaceInButton !== false;
@@ -164,6 +175,7 @@ export default {
       this.insertSpace(child, this.isNeedInserted() && autoInsertSpace),
     );
 
+    // href属性不为空则渲染<a></a>
     if ($attrs.href !== undefined) {
       return (
         <a {...buttonProps} ref="buttonNode">
@@ -180,6 +192,7 @@ export default {
       </button>
     );
 
+    // 如果button type 为link，直接返回 buttonNode
     if (type === 'link') {
       return buttonNode;
     }

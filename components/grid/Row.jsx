@@ -36,6 +36,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
+      // 获取屏幕的栅格尺寸
       this.token = ResponsiveObserve.subscribe(screens => {
         const { gutter } = this;
         if (
@@ -52,20 +53,26 @@ export default {
     ResponsiveObserve.unsubscribe(this.token);
   },
   methods: {
+    // 根据屏幕尺寸和参数gutter计算正确的[水平间距, 垂直间距]
     getGutter() {
       const results = [0, 0];
       const { gutter, screens } = this;
+      // 格式化gutter为 [水平间距, 垂直间距]
       const normalizedGutter = Array.isArray(gutter) ? gutter : [gutter, 0];
       normalizedGutter.forEach((g, index) => {
+        // item是对象，则根据屏幕尺寸算出当前屏幕尺寸最大的值
         if (typeof g === 'object') {
           for (let i = 0; i < responsiveArray.length; i++) {
             const breakpoint = responsiveArray[i];
+            // 当前断点在屏幕尺寸中且gutter中有设置该尺寸的间距值，则取出对应的值
+            // 因为屏幕的断点值是由大到小排的，所以取出该值后即可跳出循环
             if (screens[breakpoint] && g[breakpoint] !== undefined) {
               results[index] = g[breakpoint];
               break;
             }
           }
         } else {
+          // 如果item非对象，则意味着是个数字，直接取值
           results[index] = g || 0;
         }
       });
@@ -77,7 +84,7 @@ export default {
     const { type, justify, align, prefixCls: customizePrefixCls, $slots } = this;
     const getPrefixCls = this.configProvider.getPrefixCls;
     const prefixCls = getPrefixCls('row', customizePrefixCls);
-
+    // 正确的[水平间距, 垂直间距]
     const gutter = this.getGutter();
     const classes = {
       [prefixCls]: !type,
@@ -85,6 +92,9 @@ export default {
       [`${prefixCls}-${type}-${justify}`]: type && justify,
       [`${prefixCls}-${type}-${align}`]: type && align,
     };
+    // gutter参数不为空，以左右padding为例，item需要添加左右的间距，
+    // 但是第一个和最后一个子元素不需要有左右内边距，所以父元素设置相同的负值的margin，
+    // 这样可以抵消两端的padding
     const rowStyle = {
       ...(gutter[0] > 0
         ? {
