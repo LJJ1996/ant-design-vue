@@ -101,6 +101,7 @@ export const withDefault = function(type) {
  * @param {object} type - Object to enhance
  */
 export const withRequired = function(type) {
+  // obj定义isRequired属性，该属性的值是name，且不可重写，不可枚举
   Object.defineProperty(type, 'isRequired', {
     get() {
       this.required = true;
@@ -118,14 +119,14 @@ export const withRequired = function(type) {
  * @returns {object}
  */
 export const toType = (name, obj) => {
+  // obj定义_vueTypes_name属性，该属性的值是name，且不可重写，不可枚举
   Object.defineProperty(obj, '_vueTypes_name', {
-    enumerable: false,
-    writable: false,
+    enumerable: false, // enumerable 定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举。
+    writable: false, // 当 writable 属性设置为 false 时，该属性被称为“不可写的”。它不能被重新赋值。
     value: name,
   });
   withRequired(obj);
   withDefault(obj);
-
   if (isFunction(obj.validator)) {
     obj.validator = obj.validator.bind(obj);
   }

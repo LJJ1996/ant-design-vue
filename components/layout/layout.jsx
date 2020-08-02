@@ -12,7 +12,7 @@ export const BasicProps = {
 function generator({ suffixCls, tagName, name }) {
   return BasicComponent => {
     return {
-      name,
+      name, // ALayoutHeader
       props: BasicComponent.props,
       inject: {
         configProvider: { default: () => ConfigConsumerProps },
@@ -36,6 +36,7 @@ function generator({ suffixCls, tagName, name }) {
   };
 }
 
+// 渲染header、container、footer
 const Basic = {
   props: BasicProps,
   render() {

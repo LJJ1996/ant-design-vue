@@ -34,6 +34,7 @@ export default {
   props: ColProps,
   inject: {
     configProvider: { default: () => ConfigConsumerProps },
+    // Row中提供的可注入依赖
     rowContext: {
       default: () => null,
     },
@@ -56,6 +57,7 @@ export default {
     ['xs', 'sm', 'md', 'lg', 'xl', 'xxl'].forEach(size => {
       let sizeProps = {};
       const propSize = this[size];
+      // size为响应式栅格，可为栅格数或一个包含其他属性的对象
       if (typeof propSize === 'number') {
         sizeProps.span = propSize;
       } else if (typeof propSize === 'object') {
@@ -86,6 +88,7 @@ export default {
       style: {},
     };
     if (rowContext) {
+      // 获取Row组件的格式化gutter值，形如[0, 0]，给每个col加上padding值
       const gutter = rowContext.getGutter();
       if (gutter) {
         divProps.style = {

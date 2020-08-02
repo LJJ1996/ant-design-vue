@@ -1,53 +1,45 @@
 <template>
   <a-config-provider :locale="locale">
     <div>
-      <a-radio-group :value="locale" @change="changeLocale">
-        <a-radio-button key="en" :value="enUS">English</a-radio-button>
-        <a-radio-button key="cn" :value="zhCN">中文</a-radio-button>
-      </a-radio-group>
-      <div>
-        <h4>
-          v-model:
-          <a-input v-model="color" type="text" />
-        </h4>
-        <a-color-picker v-model="color" style="width:130px" @show="changeHandler" />
-      </div>
-      <div>
-        <h4>v-model:{{ color }}</h4>
-        <a-color-picker v-model="color" style="width:130px" @show="changeHandler" />
-      </div>
-      <div>
-        <h4>备选颜色</h4>
-        <a-color-picker :config="config1" />
-      </div>
-      <div>
-        <h4>多种输入格式</h4>
-        <a-color-picker :config="config2" :get-popup-container="node => node.parentNode" />
-      </div>
-      <div>
-        <button @click="config2.components.preview = !config2.components.preview">
-          修改config
-        </button>
-      </div>
-      <div>
-        <h4>多种尺寸</h4>
-        <a-color-picker size="large" />
-      </div>
-      <div>
-        <a-color-picker size="small" />
-      </div>
-      <div>
-        <h4>切换禁用</h4>
-        <a-color-picker :disabled="disabled" />
-      </div>
-      <div>
-        <button @click="disabled = !disabled">切换</button>
-      </div>
-      <div>
-        <h4>切换格式 [color:{{ color2 }}]</h4>
-        <a-color-picker v-model="color2" :locale="zhCN" :format="format" />
-      </div>
-      <div>
+      <a-layout id="components-layout-demo-custom-trigger">
+        <a-layout-sider v-model="collapsed" :trigger="null" collapsible>
+          <div class="logo" />
+          <a-menu theme="dark" mode="inline" :default-selected-keys="['1']">
+            <a-menu-item key="1">
+              <a-icon type="user" />
+              <span>nav 1</span>
+            </a-menu-item>
+            <a-menu-item key="2">
+              <a-icon type="video-camera" />
+              <span>nav 2</span>
+            </a-menu-item>
+            <a-menu-item key="3">
+              <a-icon type="upload" />
+              <span>nav 3</span>
+            </a-menu-item>
+          </a-menu>
+        </a-layout-sider>
+        <a-layout>
+          <a-layout-header style="background: #fff; padding: 0">
+            <a-icon
+              class="trigger"
+              :type="collapsed ? 'menu-unfold' : 'menu-fold'"
+              @click="() => (collapsed = !collapsed)"
+            />
+          </a-layout-header>
+          <a-layout-content
+            :style="{
+              margin: '24px 16px',
+              padding: '24px',
+              background: '#fff',
+              minHeight: '280px',
+            }"
+            >Content</a-layout-content
+          >
+        </a-layout>
+      </a-layout>
+
+      <!-- <div>
         <a-row
           align="top"
           :gutter="{ xs: 8, sm: 16, md: 24 }"
@@ -56,16 +48,10 @@
           v-if="show"
         >
           <a-col>
-            <a-button icon="right" shape="round" @click="format = 'HEX'" type="primary"
-              >测试</a-button
-            >
+            <a-button icon="right" shape="round" @click="format = 'HEX'" type="primary">测试</a-button>
           </a-col>
         </a-row>
-        <button @click="() => (show = !show)">RGBA</button>
-        <button @click="format = 'HSVA'">HSVA</button>
-        <button @click="format = 'HSLA'">HSLA</button>
-        <button @click="format = 'CMYK'">CMYK</button>
-      </div>
+      </div>-->
     </div>
   </a-config-provider>
 </template>
@@ -77,68 +63,30 @@ export default {
   name: 'Demo',
   data() {
     return {
-      color: '#ccc',
-      color2: '#ccc',
-      disabled: false,
-      format: '',
-      locale: enUS,
-      enUS,
-      zhCN,
-      config1: {
-        swatches: [
-          'rgba(244, 67, 54, 1)',
-          'rgba(233, 30, 99, 0.95)',
-          'rgba(156, 39, 176, 0.9)',
-          'rgba(103, 58, 183, 0.85)',
-          'rgba(63, 81, 181, 0.8)',
-          'rgba(33, 150, 243, 0.75)',
-          'rgba(3, 169, 244, 0.7)',
-          'rgba(0, 188, 212, 0.7)',
-          'rgba(0, 150, 136, 0.75)',
-          'rgba(76, 175, 80, 0.8)',
-          'rgba(139, 195, 74, 0.85)',
-          'rgba(205, 220, 57, 0.9)',
-          'rgba(255, 235, 59, 0.95)',
-          'rgba(255, 193, 7, 1)',
-        ],
-      },
-      config2: {
-        components: {
-          // Main components
-          preview: true,
-          opacity: true,
-          hue: true,
-          interaction: {
-            hex: true,
-            rgba: true,
-            hsla: true,
-            hsva: true,
-            cmyk: true,
-            input: true,
-            clear: true,
-            save: true,
-          },
-          strings: {
-            save: 'Save',
-            clear: 'Clear',
-            cancel: 'Cancel',
-          },
-        },
-      },
-      loading: false,
-      show: true,
+      collapsed: false,
     };
   },
   created() {},
-  methods: {
-    changeHandler(...arg) {
-      arg;
-      // console.log(arg);
-    },
-    changeLocale(e) {
-      const localeValue = e.target.value;
-      this.locale = localeValue;
-    },
-  },
+  methods: {},
 };
 </script>
+
+<style>
+#components-layout-demo-custom-trigger .trigger {
+  font-size: 18px;
+  line-height: 64px;
+  padding: 0 24px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#components-layout-demo-custom-trigger .trigger:hover {
+  color: #1890ff;
+}
+
+#components-layout-demo-custom-trigger .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+}
+</style>

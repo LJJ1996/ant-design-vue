@@ -20,6 +20,8 @@ export default {
     ...RowProps,
     gutter: PropTypes.oneOfType([PropTypes.object, PropTypes.number, PropTypes.array]).def(0),
   },
+  // provide 选项应该是一个对象或返回一个对象的函数，以允许一个祖先组件向其所有子孙后代注入一个依赖
+  // 提供的rowContext属性在Col组件中被使用
   provide() {
     return {
       rowContext: this,
@@ -36,7 +38,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      // 获取屏幕的栅格尺寸
+      // 获取屏幕的栅格尺寸，订阅屏幕的变化
       this.token = ResponsiveObserve.subscribe(screens => {
         const { gutter } = this;
         if (
@@ -50,6 +52,7 @@ export default {
     });
   },
   beforeDestroy() {
+    // 组件卸载时，根据token取消订阅
     ResponsiveObserve.unsubscribe(this.token);
   },
   methods: {
