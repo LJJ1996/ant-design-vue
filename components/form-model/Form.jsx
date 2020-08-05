@@ -8,15 +8,15 @@ import { initDefaultProps, getListeners } from '../_util/props-util';
 import { ConfigConsumerProps } from '../config-provider';
 
 export const FormProps = {
-  layout: PropTypes.oneOf(['horizontal', 'inline', 'vertical']),
-  labelCol: PropTypes.shape(ColProps).loose,
-  wrapperCol: PropTypes.shape(ColProps).loose,
-  colon: PropTypes.bool,
-  labelAlign: PropTypes.oneOf(['left', 'right']),
-  prefixCls: PropTypes.string,
-  hideRequiredMark: PropTypes.bool,
-  model: PropTypes.object,
-  rules: PropTypes.object,
+  layout: PropTypes.oneOf(['horizontal', 'inline', 'vertical']), // 表单布局
+  labelCol: PropTypes.shape(ColProps).loose, // label 标签布局
+  wrapperCol: PropTypes.shape(ColProps).loose, // 需要为输入控件设置布局样式时，使用该属性，用法同 labelCol
+  colon: PropTypes.bool, // 配置 Form.Item 的 colon 的默认值
+  labelAlign: PropTypes.oneOf(['left', 'right']), // label 标签的文本对齐方式
+  prefixCls: PropTypes.string, // class类名前缀
+  hideRequiredMark: PropTypes.bool, // 隐藏所有表单项的必选标记
+  model: PropTypes.object, // 表单数据对象
+  rules: PropTypes.object, // 表单验证规则
   validateMessages: PropTypes.any,
   validateOnRuleChange: PropTypes.bool,
 };
@@ -115,6 +115,8 @@ const Form = {
       });
     },
     validate(callback) {
+      debugger;
+      // 没有绑定数据对象，缺少必要属性，直接抛出warning
       if (!this.model) {
         warning(false, 'FormModel', 'model is required for resetFields to work.');
         return;
@@ -130,7 +132,7 @@ const Form = {
       }
       let valid = true;
       let count = 0;
-      // 如果需要验证的fields为空，调用验证时立刻返回callback
+      // 如果需要验证的fields为空，则立即执行callback
       if (this.fields.length === 0 && callback) {
         callback(true);
       }

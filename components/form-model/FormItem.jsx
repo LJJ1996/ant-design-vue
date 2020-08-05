@@ -17,16 +17,20 @@ import { cloneElement } from '../_util/vnode';
 
 function noop() {}
 
+// 获取每个item的校验值
 function getPropByPath(obj, path, strict) {
   let tempObj = obj;
+  // 处理某种情况，直接传入props下面三句话没作用
   path = path.replace(/\[(\w+)\]/g, '.$1');
   path = path.replace(/^\./, '');
 
   let keyArr = path.split('.');
   let i = 0;
   for (let len = keyArr.length; i < len - 1; ++i) {
+    // 传入的目标对象为空 且 非严格模式，中止循环
     if (!tempObj && !strict) break;
     let key = keyArr[i];
+    // 获取obj[key]的值
     if (key in tempObj) {
       tempObj = tempObj[key];
     } else {
@@ -156,11 +160,16 @@ export default {
           this.FormContext.$emit('validate', this.prop, !errors, this.validateMessage || null);
       });
     },
+    // 获取当前组件的校验规则
     getRules() {
+      // 获取form组件的rules
       let formRules = this.FormContext.rules;
+      // 获取当前组件的rules
       const selfRules = this.rules;
+      // 格式化required规则, (form item中的required属性)
       const requiredRule =
         this.required !== undefined ? { required: !!this.required, trigger: 'change' } : [];
+      // 通过this.prop的值获取对应的rules校验规则
       const prop = getPropByPath(formRules, this.prop || '');
       formRules = formRules ? prop.o[this.prop || ''] || prop.v : [];
       return [].concat(selfRules || formRules || []).concat(requiredRule);

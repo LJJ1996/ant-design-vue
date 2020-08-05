@@ -52,7 +52,6 @@ const responsiveObserve = {
   },
   // 订阅
   subscribe(func) {
-    console.log('this is subscribe', func);
     // 之前无订阅者就先注册事件
     if (subscribers.length === 0) {
       this.register();
